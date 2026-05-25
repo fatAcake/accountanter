@@ -1,0 +1,14 @@
+# Secrets
+.env
+.env.local
+.env.*.local
+
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+# Logs
+*.log
