@@ -7,6 +7,7 @@ import {
   Button,
   Table,
   Empty,
+  Grid,
 } from 'antd';
 import { FileExcelOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
@@ -33,6 +34,8 @@ export default function OsvReport() {
   const [loading, setLoading] = useState(false);
   const [report, setReport] = useState<OsvReportType | null>(null);
   const [accounts, setAccounts] = useState<Account[]>([]);
+  const screens = Grid.useBreakpoint();
+  const isMobile = screens.md === false;
 
   useEffect(() => {
     const loadAccounts = async () => {
@@ -159,7 +162,7 @@ export default function OsvReport() {
       </h2>
 
       <Card className="mb-6">
-        <Form form={form} layout="inline">
+        <Form form={form} layout={isMobile ? 'vertical' : 'inline'}>
           <Form.Item
             name="dateRange"
             label="Период"
@@ -172,7 +175,7 @@ export default function OsvReport() {
               allowClear
               showSearch
               placeholder="Все счета"
-              style={{ width: 250 }}
+              style={{ width: isMobile ? '100%' : 250 }}
               filterOption={(input, option) =>
                 (option?.label?.toString() ?? '')
                   .toLowerCase()
@@ -185,13 +188,19 @@ export default function OsvReport() {
             />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" onClick={handleGenerateReport} loading={loading}>
+            <Button
+              type="primary"
+              block={isMobile}
+              onClick={handleGenerateReport}
+              loading={loading}
+            >
               Сформировать
             </Button>
           </Form.Item>
           <Form.Item>
             <Button
               icon={<FileExcelOutlined />}
+              block={isMobile}
               onClick={handleExport}
               disabled={!report || report.rows.length === 0}
             >

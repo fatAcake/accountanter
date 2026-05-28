@@ -20,7 +20,7 @@ export function AdminRoute({ children }: { children: ReactNode }) {
   }
 
   if (!isAdmin()) {
-    return <Navigate to="/transactions" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   return <>{children}</>;
@@ -30,7 +30,7 @@ export function PublicRoute({ children }: { children: ReactNode }) {
   const { isAuthenticated } = useAuth();
 
   if (isAuthenticated) {
-    return <Navigate to="/transactions" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   return <>{children}</>;

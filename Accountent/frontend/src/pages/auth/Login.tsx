@@ -11,7 +11,7 @@ export default function Login() {
   const onFinish = async (values: { email: string; password: string }) => {
     try {
       await login(values.email, values.password);
-      navigate('/transactions');
+      navigate('/dashboard');
     } catch {
       // ошибка показана в useAuth
     }

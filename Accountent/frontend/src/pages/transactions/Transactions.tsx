@@ -9,6 +9,7 @@ import {
   Form,
   Modal,
   Tooltip,
+  Grid,
 } from 'antd';
 import {
   PlusOutlined,
@@ -50,6 +51,8 @@ export default function Transactions() {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [counterparties, setCounterparties] = useState<Counterparty[]>([]);
   const [filterForm] = Form.useForm<TransactionFilters>();
+  const screens = Grid.useBreakpoint();
+  const isMobile = screens.md === false;
 
   const loadAccounts = async () => {
     try {
@@ -245,7 +248,7 @@ export default function Transactions() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
         <h2 className="text-2xl font-bold m-0">Журнал проводок</h2>
         {canEdit() && (
           <Space>
@@ -263,7 +266,7 @@ export default function Transactions() {
         )}
       </div>
 
-      <Form form={filterForm} layout="inline" className="mb-4">
+      <Form form={filterForm} layout={isMobile ? 'vertical' : 'inline'} className="mb-4">
         <Form.Item name="dateRange" label="Период">
           <RangePicker format="DD.MM.YYYY" />
         </Form.Item>
@@ -272,7 +275,7 @@ export default function Transactions() {
             allowClear
             showSearch
             placeholder="Выберите счёт"
-            style={{ width: 250 }}
+            style={{ width: isMobile ? '100%' : 250 }}
             filterOption={(input, option) =>
               (option?.label?.toString() ?? '')
                 .toLowerCase()
@@ -289,7 +292,7 @@ export default function Transactions() {
             allowClear
             showSearch
             placeholder="Выберите контрагента"
-            style={{ width: 200 }}
+            style={{ width: isMobile ? '100%' : 200 }}
             filterOption={(input, option) =>
               (option?.label?.toString() ?? '')
                 .toLowerCase()
@@ -302,11 +305,16 @@ export default function Transactions() {
           />
         </Form.Item>
         <Form.Item>
-          <Space>
-            <Button type="primary" onClick={handleFilter}>
+          <Space
+            direction={isMobile ? 'vertical' : 'horizontal'}
+            style={isMobile ? { width: '100%' } : undefined}
+          >
+            <Button type="primary" block={isMobile} onClick={handleFilter}>
               Применить
             </Button>
-            <Button onClick={handleResetFilter}>Сбросить</Button>
+            <Button block={isMobile} onClick={handleResetFilter}>
+              Сбросить
+            </Button>
           </Space>
         </Form.Item>
       </Form>
